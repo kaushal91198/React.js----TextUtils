@@ -6,6 +6,17 @@
   height: 40vmin;
   pointer-events: none;
 }
+/* manullay added */
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+.accordion-button::after {
+  filter: invert(1);
+}
+/* manullay added */
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

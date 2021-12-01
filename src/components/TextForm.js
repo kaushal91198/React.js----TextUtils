@@ -39,28 +39,29 @@ export default function TextForm(props) {
         setText(event.target.value)
         //see video at 19.03
     }
-    const emptyText  = ()=>{
-        props.showAlert('Pease enter the text first!','Failure')
-    }
+ 
     return (
         <>
         <div className='container' style={{color:props.mode==='dark'?'white':'black'}}>
-            <h1>{props.heading}</h1>
+            <h1 className='mb-4 '>{props.heading}</h1>
             <div className="mb-3">
-                <textarea className="form-control" value={text} onChange= {handleOnChange} id="myBox" rows="8" placeholder="Enter your text here" style={{backgroundColor:props.mode==='dark'?'grey':'white'}}></textarea>
+                <textarea className="form-control" value={text} onChange= {handleOnChange} id="myBox" rows="8" placeholder="Enter your text here" style={{backgroundColor:props.mode==='dark'?'#052f51':'white'}}></textarea>
             </div>
-            <button className="btn btn-primary" onClick = {text!==''?handleUpClick:emptyText} >Convert to uppercase</button>
-            <button className="btn btn-primary mx-2" onClick = {text!==''?handleLowClick:emptyText} >Convert to lowercase</button>
-            <button className="btn btn-primary" onClick = {text!==''?handleClearClick:emptyText} >Clear text</button>
-            <button className="btn btn-primary mx-2" onClick = {text!==''?removeSpaceClick:emptyText} >Remove Extra spaces</button>
+            <button disabled={text.length===0} className="btn btn-success mx-1 my-1 border border-dark" onClick = {handleUpClick} >Convert to uppercase</button>
+            <button disabled={text.length===0} className="btn btn-success mx-1 my-1 border border-dark" onClick = {handleLowClick} >Convert to lowercase</button>
+            <button disabled={text.length===0} className="btn btn-success mx-1 my-1 border border-dark" onClick = {handleClearClick} >Clear text</button>
+            <button disabled={text.length===0} className="btn btn-success mx-1 my-1 border border-dark" onClick = {removeSpaceClick} >Remove Extra spaces</button>
         </div>
         <div className ='container my-3' style={{color:props.mode==='dark'?'white':'black'}}>
             <h2>Your Text summary</h2>
             <p>{text===''?0:text.replace(/(^\s*)|(\s*$)/gi,"").replace(/[ ]{2,}/gi," ").replace(/\n /,"\n").split(' ').length} words and {text===''?0:text.split(/[ ]+/).join(' ').length} characters</p>
             <p>{0.008 * text.split(" ").length} minutes to read</p>
             <h2>Preview</h2>
-            <p>{text.length>0?text:'Enter something to preview it here'}</p>
+            <p>{text.length>0?text:'Nothing to preview'}</p>
         </div>
         </>
     )
+
 }
+
+// we can put text.split(" ").filter((element)=>{return element.length!==0}).length

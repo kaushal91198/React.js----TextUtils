@@ -9,11 +9,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 function App() {
   const [mode, setMode] = useState("light");
   const [alert, setAlert] = useState(null);
-  const [style , setStyle] = useState({
-    color:'black',
-    backgroundColor:'white',
-    border:'2px solid white'
-})
+  const [style, setStyle] = useState({
+    color: "black",
+    backgroundColor: "white",
+    border: "2px solid white",
+  });
+
+
   const showAlert = (message, type) => {
     setAlert({
       message: message,
@@ -24,26 +26,40 @@ function App() {
     }, 3000);
   };
 
+
+  //Removing the theme
+  const removeTheme = ()=>{
+    document.body.classList.remove('bg-primary');
+    document.body.classList.remove('bg-success');
+    document.body.classList.remove('bg-danger');
+    document.body.classList.remove('bg-warning');
+  }
+  // adding classes of theme
+  const theme = (cls) => {
+    removeTheme()
+    document.body.classList.add("bg-" + cls);
+  };
+
+
   const toggleMode = () => {
+    removeTheme()
     if (mode === "dark") {
-      
       //Home
       setMode("light");
       document.body.style.backgroundColor = "white";
 
       //alert
       showAlert("Light mode has been enabled.", "Success");
-      
+
       //title
       document.title = "Textutils";
 
       //about page
       setStyle({
-        color:'black',
-        backgroundColor:'white'
-    })
+        color: "black",
+        backgroundColor: "white",
+      });
     } else {
-
       //Home
       setMode("dark");
       document.body.style.backgroundColor = "#042743";
@@ -54,13 +70,12 @@ function App() {
       //title
       //if we we want to change the title dynamically
       document.title = "Textutils - Darkmode";
-      
+
       //About
       setStyle({
-      color:'white',
-      backgroundColor:'black'
-  })
-
+        color: "white",
+        backgroundColor: "#042743",
+      });
       // see video(15) at 8.32
       /*
       setInterval(()=>{
@@ -72,6 +87,9 @@ function App() {
       */
     }
   };
+
+  
+
   return (
     <>
       <Router>
@@ -80,20 +98,27 @@ function App() {
           aboutUs="About us"
           mode={mode}
           toggleMode={toggleMode}
+          theme={theme}
         />
         <Alert alert={alert} />
         <div className="container my-3">
           <Routes>
-          <Route exact path="/" element={<TextForm
-                heading="Enter the text to analyse below"
-                mode={mode}
-                showAlert={showAlert}
-              />}>
-            </Route>
-            <Route exact path="/about" element = {<About 
-                   style={style}
-                  />}>
-            </Route>
+            <Route
+              exact
+              path="/"
+              element={
+                <TextForm
+                  heading="TextUtils - Word counter, Character counter, Remove extra spaces"
+                  mode={mode}
+                  showAlert={showAlert}
+                />
+              }
+            ></Route>
+            <Route
+              exact
+              path="/about"
+              element={<About style={style} />}
+            ></Route>
           </Routes>
         </div>
       </Router>
