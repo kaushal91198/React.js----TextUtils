@@ -1,16 +1,102 @@
 import "./App.css";
-// import About from "./components/About";
+import About from "./components/About";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
+import React, { useState } from "react";
+import Alert from "./components/Alert";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
+  const [mode, setMode] = useState("light");
+  const [alert, setAlert] = useState(null);
+  const [style , setStyle] = useState({
+    color:'black',
+    backgroundColor:'white',
+    border:'2px solid white'
+})
+  const showAlert = (message, type) => {
+    setAlert({
+      message: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  };
+
+  const toggleMode = () => {
+    if (mode === "dark") {
+      
+      //Home
+      setMode("light");
+      document.body.style.backgroundColor = "white";
+
+      //alert
+      showAlert("Light mode has been enabled.", "Success");
+      
+      //title
+      document.title = "Textutils";
+
+      //about page
+      setStyle({
+        color:'black',
+        backgroundColor:'white'
+    })
+    } else {
+
+      //Home
+      setMode("dark");
+      document.body.style.backgroundColor = "#042743";
+
+      //Alert
+      showAlert("Dark mode has been enabled.", "Success");
+
+      //title
+      //if we we want to change the title dynamically
+      document.title = "Textutils - Darkmode";
+      
+      //About
+      setStyle({
+      color:'white',
+      backgroundColor:'black'
+  })
+
+      // see video(15) at 8.32
+      /*
+      setInterval(()=>{
+      document.title = 'Textutils - Darkmode'
+      },2000)
+      setInterval(()=>{
+      document.title = 'Textutils is amazing.'
+      },1500)
+      */
+    }
+  };
   return (
     <>
-      <Navbar title = "TextUtils" aboutUs="About us" />
-      <div className="container my-3">
-          <TextForm heading="Enter the text to analyse below"/>
-        {/* <About/> */}
-      </div>
+      <Router>
+        <Navbar
+          title="TextUtils"
+          aboutUs="About us"
+          mode={mode}
+          toggleMode={toggleMode}
+        />
+        <Alert alert={alert} />
+        <div className="container my-3">
+          <Routes>
+          <Route exact path="/" element={<TextForm
+                heading="Enter the text to analyse below"
+                mode={mode}
+                showAlert={showAlert}
+              />}>
+            </Route>
+            <Route exact path="/about" element = {<About 
+                   style={style}
+                  />}>
+            </Route>
+          </Routes>
+        </div>
+      </Router>
     </>
   );
 }
